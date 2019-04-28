@@ -84,6 +84,7 @@ const MainPage = (props) => {
             })
             .then((result) => {
                 console.log(result);
+                console.log(result);
             })
             .catch((error) => {
                     console.log("There has been a problem with your fetch operation: ",error.message);
