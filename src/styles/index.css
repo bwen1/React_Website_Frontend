@@ -1,0 +1,131 @@
+/******** Login Page & Signup Page ********/
+
+.LoginPage {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 17px;
+    font-weight: 555;
+}
+
+/* Email and Password text */
+.LoginText {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 17px;
+    font-weight: 555;
+    padding: 0px 12px;
+}
+
+/* Input boxes */
+input {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 4px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Login and Register button */
+.LoginButton {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 17px;
+    font-weight: 555;
+    width: 50%;
+    background-color: #564caf;
+    color: white;
+    border: 2px solid #564caf;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Signup and I have an account button */
+.SignUpButton {
+    background: none;
+    border: none;
+    color: #564caf;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 17px;
+    font-weight: 555;
+    width: 25%;
+    align-items: center;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Login and Register button */
+.LoginButton:hover {
+    background-color: #4236a8;
+    color: white;
+}
+
+/* Signup and I have an account button */
+.SignUpButton:hover {
+    color: #4236a8;
+}
+
+/******** Main Page ********/
+
+.header {
+    font-family: Verdana, Geneva, sans-serif;
+    padding: 20px;
+    text-align: center;
+    background: #4236a8;
+    color: white;
+    font-size: 30px;
+}
+
+.logoutButton {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 17px;
+    font-weight: 555;
+    width: 7.5%;
+    background-color: #564caf;
+    color: white;
+    border: 2px solid #564caf;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logoutButton:hover {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 17px;
+    font-weight: 555;
+    width: 7.5%;
+    background-color: #4236a8;
+    color: white;
+    border: 2px solid #4236a8;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mainButtons {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 15px;
+    font-weight: 555;
+    width: 10%;
+    background-color: #564caf;
+    color: white;
+    border: 2px solid #564caf;
+    padding: 10px 20px;
+    margin: 0px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.app {
+    background-size: cover;
+    -webkit-background-size: cover;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    padding: 50px;
+}
+
+.text {
+    word-wrap: break-word;
+}
