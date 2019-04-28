@@ -83,7 +83,7 @@ const MainPage = (props) => {
                 throw new Error("Network response was not ok.");
             })
             .then((result) => {
-                appDiv.innerHTML = JSON.stringify(result);
+                console.log(result);
             })
             .catch((error) => {
                     console.log("There has been a problem with your fetch operation: ",error.message);
