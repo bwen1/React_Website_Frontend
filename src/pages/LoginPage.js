@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-// Clear token on logout
-//window.localStorage.setItem('token', null);
-
 const LoginPage = (props) => {
-    let ssEmail = props.sEmail;
     const [email, setEmail] = useState(''); // State of email input box
     const [password, setPassword] = useState(''); // State of password input box
 
     useEffect(() => {
-        // TODO CHECK IF TOKEN EXISTS
-    }, []);
+        // If token already exists log the user in automatically
+        if (window.localStorage.getItem('token') !== null) {
+            props.changePage('MainPage');
+        } else {
+        }
+    }, [props]);
 
     // Change contents of email input box
     const handleChangeEmail = (event) => {
@@ -40,7 +40,6 @@ const LoginPage = (props) => {
             .then((result) => {
                 window.localStorage.setItem('token', result.token); // Store token in localStorage
                 props.changePage('MainPage'); // Change to MainPage
-                
             })
             .catch((error) => {
                 alert(

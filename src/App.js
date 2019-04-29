@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import MainPage from './pages/MainPage';
-// TODO: npm start
+// TODO: npm install + npm start
 const App = () => {
     const [page, setPage] = useState('Login');
-
+    document.title = 'Queensland Offences Registry';
     //What does this do again?
     const handleChangePage = (pageId) => {
         setPage(pageId);

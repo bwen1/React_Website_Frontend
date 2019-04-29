@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import LoginPage from '../pages/LoginPage';
+import React, { useState } from 'react';
+
 const SignUpPage = (props) => {
-    // TODO: Can we use same variable names throug different pages?
     const [email, setEmail] = useState(''); // State of email input box
     const [password, setPassword] = useState(''); // State of password input box
 
