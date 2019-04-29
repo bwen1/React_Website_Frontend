@@ -36,32 +36,30 @@ const SignUpPage = (props) => {
                 throw new Error('Network response was not ok');
             })
             .then((result) => {
-
                 fetch('https://cab230.hackhouse.sh/login', {
-            method: 'POST',
-            body: `email=${email}&password=${password}`,
-            headers: {
-                'Content-type': 'application/x-www-form-urlencoded'
-            }
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Network response was not ok.');
-            })
-            .then((result) => {
-                window.localStorage.setItem('token', result.token); // Store token in localStorage
-                props.changePage('MainPage'); // Change to MainPage
-                
-            })
-            .catch((error) => {
-                alert(
-                    'Your login details are incorrect, please try again. ',
-                    error.message
-                );
-            });
-               // props.changePage('Login'); // Change to LoginPage
+                    method: 'POST',
+                    body: `email=${email}&password=${password}`,
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then((result) => {
+                        window.localStorage.setItem('token', result.token); // Store token in localStorage
+                        props.changePage('MainPage'); // Change to MainPage
+                    })
+                    .catch((error) => {
+                        alert(
+                            'Your login details are incorrect, please try again. ',
+                            error.message
+                        );
+                    });
+                // props.changePage('Login'); // Change to LoginPage
             })
             // Password must be at least 5 characters long, email must be at least 5 characters long
             .catch((error) => {
