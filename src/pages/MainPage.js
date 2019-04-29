@@ -129,7 +129,7 @@ const MainPage = (props) => {
                 </button>
             </div>
             <div className="Tables">
-            // TODO: Fix
+            // TODO: Fix, because when clear cannot render as cannot map undefined
                 {if (offences.length > 0) {
                     offences.map((offence) => (
                     <div> {offence} </div>

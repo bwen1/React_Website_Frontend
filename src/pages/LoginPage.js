@@ -10,7 +10,7 @@ const LoginPage = (props) => {
             props.changePage('MainPage');
         } else {
         }
-    }, [props]);
+    }, );
 
     // Change contents of email input box
     const handleChangeEmail = (event) => {
