@@ -10,7 +10,15 @@ const LoginPage = (props) => {
             props.changePage('MainPage');
         } else {
         }
-    }, );
+    });
+
+    const enterPressed = (event) => {
+        var code = event.keyCode || event.which;
+        if (code === 13) {
+            //13 is the enter keycode
+            //Do stuff in here
+        }
+    };
 
     // Change contents of email input box
     const handleChangeEmail = (event) => {

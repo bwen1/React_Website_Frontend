@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import LoginPage from './LoginPage';
+
 const MainPage = (props) => {
     const [search, setSearch] = useState('');
     const [offences, setOffences] = useState([]);
+    const [total, setTotal] = useState([]);
 
     const handleChangeSearch = (event) => {
         setSearch(event.target.value);
@@ -18,11 +20,11 @@ const MainPage = (props) => {
         setOffences([].offences);
     };
 
-    const fetchListOffences = () => {
+    /*const fetchListOffences = () => {
         fetch('https://cab230.hackhouse.sh/offences')
             .then(function(response) {
                 if (response.ok) {
-                    console.log('first' + response);
+                    //console.log('first' + response);
                     return response.json();
                 }
                 throw new Error('Network response was not ok.');
@@ -39,14 +41,14 @@ const MainPage = (props) => {
                     error.message
                 );
             });
-    };
+    }; */
 
     const searchButton = () => {
         if (search === '') {
             fetch('https://cab230.hackhouse.sh/offences')
                 .then(function(response) {
                     if (response.ok) {
-                        console.log('first' + response);
+                        //console.log('first' + response);
                         return response.json();
                     }
                     throw new Error('Network response was not ok.');
@@ -67,7 +69,7 @@ const MainPage = (props) => {
             //The parameters of the call
             let getParam = { method: 'GET' };
             let head = {
-                Authorization: 'Bearer' + window.localStorage.getItem('token')
+                Authorization: 'Bearer ' + window.localStorage.getItem('token')
             };
             getParam.headers = head;
 
@@ -84,8 +86,20 @@ const MainPage = (props) => {
                     throw new Error('Network response was not ok.');
                 })
                 .then((response) => {
-                    setOffences(response.offences);
-                    console.log(response);
+                    const allLGA = response.result.map(
+                        (location) => location.LGA
+                    );
+
+                    const allTotal = response.result.map(
+                        (location) => location.total
+                    );
+
+                    setOffences(allLGA);
+                    setTotal(allTotal);
+                    // TODO: Are we allowed to use libraries for table sorting
+
+                    console.log(allTotal);
+                    //console.log(response);
                 })
                 .catch((error) => {
                     console.log(
@@ -121,19 +135,26 @@ const MainPage = (props) => {
                 <button className="mainButtons" onClick={searchButton}>
                     Search
                 </button>
-                <button className="mainButtons" onClick={fetchListOffences}>
+
+                {/*<button className="mainButtons" onClick={fetchListOffences}>
                     List All
-                </button>
+    </button>*/}
                 <button className="mainButtons" onClick={handleClickClear}>
-                    Clear All
+                    Clear
                 </button>
             </div>
             <div className="Tables">
-            // TODO: Fix, because when clear cannot render as cannot map undefined
-                {if (offences.length > 0) {
-                    offences.map((offence) => (
-                    <div> {offence} </div>
-                ))}}
+                <table class="sortable">
+                    <tbody>
+                        {offences !== undefined
+                            ? offences.map((offence) => (
+                                  <tr>
+                                      <td> {offence} </td>
+                                  </tr>
+                              ))
+                            : null}
+                    </tbody>
+                </table>
             </div>
             <p className="text">
                 {'My current token is: ' + window.localStorage.getItem('token')}
