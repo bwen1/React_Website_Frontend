@@ -4,6 +4,7 @@ import LoginPage from './LoginPage';
 const MainPage = (props) => {
     const [search, setSearch] = useState('');
     const [offences, setOffences] = useState([]);
+    const [crime, setCrime] = useState([]);
     const [total, setTotal] = useState([]);
 
     const handleChangeSearch = (event) => {
@@ -17,7 +18,9 @@ const MainPage = (props) => {
     };
 
     const handleClickClear = () => {
-        setOffences([].offences);
+        setOffences([]);
+        setCrime([]);
+        setTotal([]);
     };
 
     /*const fetchListOffences = () => {
@@ -54,6 +57,8 @@ const MainPage = (props) => {
                     throw new Error('Network response was not ok.');
                 })
                 .then(function(response) {
+                    setCrime([]);
+                    setTotal([]);
                     setOffences(response.offences);
                     console.log(response);
                 })
@@ -93,12 +98,10 @@ const MainPage = (props) => {
                     const allTotal = response.result.map(
                         (location) => location.total
                     );
-
-                    setOffences(allLGA);
+                    setOffences([]);
+                    setCrime(allLGA);
                     setTotal(allTotal);
-                    // TODO: Are we allowed to use libraries for table sorting
 
-                    console.log(allTotal);
                     //console.log(response);
                 })
                 .catch((error) => {
@@ -108,6 +111,13 @@ const MainPage = (props) => {
                     );
                 });
         }
+        //console.log(total);
+    };
+    //TODO fix table sorting
+    const tableSort = () => {
+        const crimeData = total;
+        crimeData.sort((a, b) => a - b);
+        setCrime(crimeData);
     };
 
     return (
@@ -144,20 +154,37 @@ const MainPage = (props) => {
                 </button>
             </div>
             <div className="Tables">
-                <table class="sortable">
+                {crime.length > 1 ? (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th onClick={tableSort}>LGA</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {crime.map((crimes, index) => (
+                                <tr>
+                                    <td>{crimes}</td>
+                                    <td>{total[index]}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : null}
+
+                <table>
                     <tbody>
-                        {offences !== undefined
-                            ? offences.map((offence) => (
-                                  <tr>
-                                      <td> {offence} </td>
-                                  </tr>
-                              ))
-                            : null}
+                        {offences.map((offence) => (
+                            <tr>
+                                <td> {offence} </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
             <p className="text">
-                {'My current token is: ' + window.localStorage.getItem('token')}
+                {/*{'My current token is: ' + window.localStorage.getItem('token')}*/}
             </p>
         </div>
     );
