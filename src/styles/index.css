@@ -82,7 +82,7 @@ input {
     font-family: Verdana, Geneva, sans-serif;
     font-size: 17px;
     font-weight: 555;
-    width: 7.5%;
+
     background-color: #564caf;
     color: white;
     border: 2px solid #564caf;
@@ -95,7 +95,6 @@ input {
     font-family: Verdana, Geneva, sans-serif;
     font-size: 17px;
     font-weight: 555;
-    width: 7.5%;
     background-color: #4236a8;
     color: white;
     border: 2px solid #4236a8;
@@ -117,21 +116,24 @@ input {
     border-radius: 4px;
     cursor: pointer;
 }
-
+/*https://www.w3schools.com/howto/howto_css_loader.asp*/
 .Loader {
-    border: 16px solid #e6e3e3; /* Light grey */
-    border-top: 16px solid #564caf; /* Blue */
+    border: 13px solid #e6e3e3;
+    border-top: 13px solid #564caf;
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    height: 70px;
+    width: 70px;
+    animation: spin 1s linear infinite;
+}
 
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .Tables {
     font-family: Verdana, Geneva, sans-serif;
@@ -157,6 +159,14 @@ input {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
+}
+
+.Filters {
+    font-family: Verdana, Geneva, sans-serif;
+    position: relative;
+    font-size: 15px;
+    padding: 4px;
+    margin: 4px;
 }
 
 .app {
