@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import LoginPage from './LoginPage';
 
+
 const MainPage = (props) => {
+    const [refOffences, setROffences] = useState([]);
+    const [refCrimes, setRCrimes] = useState([]);
     const [search, setSearch] = useState('');
     const [offences, setOffences] = useState([]);
     const [crime, setCrime] = useState([]);
@@ -17,6 +20,7 @@ const MainPage = (props) => {
     const [yearList, setYearList] = useState([]);
     const [ageList, setAgeList] = useState([]);
     const [areaList, setAreaList] = useState([]);
+
 
     useEffect(() => {
         let getParam = { method: 'GET' };
@@ -61,6 +65,8 @@ const MainPage = (props) => {
             });
     }, []);
 
+
+    
     const handleChangeSearch = (event) => {
         setSearch(event.target.value);
     };
@@ -93,6 +99,7 @@ const MainPage = (props) => {
                 })
                 .then((response) => {
                     setOffences(response.offences);
+                    setROffences(response.offences);
                     //console.log(response);
                     setLoad(false);
                 })
@@ -148,6 +155,7 @@ const MainPage = (props) => {
                     );
 
                     setCrime(allLGA);
+                    setRCrimes(allLGA);
                     setTotal(allTotal);
                     setLoad(false);
                     console.log(response);
@@ -167,6 +175,26 @@ const MainPage = (props) => {
         crimeData.sort((a, b) => a - b);
         setCrime(crimeData);
     };
+//https://codepen.io/mtclmn/pen/QyPVJp
+    const filterFunc = (event) =>{
+        var updatedList;
+        if (offences.length > 0) {updatedList = refOffences;
+            updatedList = updatedList.filter(function(item){
+        return item.toLowerCase().search(
+            event.target.value.toLowerCase()) !== -1;
+    });
+    setOffences(updatedList);}
+
+    else {
+    updatedList = refCrimes;
+    updatedList = updatedList.filter(function(item){
+      return item.toLowerCase().search(
+        event.target.value.toLowerCase()) !== -1;
+    });
+    setCrime(updatedList);
+}
+      }
+
 
     return (
         <div>
@@ -183,7 +211,7 @@ const MainPage = (props) => {
             </div>
 
             <div align="left">
-                <input
+            <input
                     type="search"
                     value={search}
                     onChange={handleChangeSearch}
@@ -252,9 +280,12 @@ const MainPage = (props) => {
                         </option>
                     ))}
                 </select>
+                <input type="text" className="filterSearch" placeholder="Search results" onChange={filterFunc}/>
             </div>
+
             <br />
             <br />
+ 
 
             <div align="center">
                 {load ? <div className="Loader"> </div> : null}
