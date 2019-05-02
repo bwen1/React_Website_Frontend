@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import Chart from 'chart.js';
 import ReactChartkick, { ColumnChart } from 'react-chartkick';
 import { ReactBingmaps } from 'react-bingmaps';
@@ -25,7 +26,8 @@ const MainPage = (props) => {
     const [areaList, setAreaList] = useState([]);
 
     const [chart, setChart] = useState(false);
-
+    const [ascending, setAscending] = useState(false);
+    const [alphabetical, setAlphabetical] = useState(true);
     useEffect(() => {
         let getParam = { method: 'GET' };
         let head = {
@@ -105,7 +107,7 @@ const MainPage = (props) => {
                 .then((response) => {
                     setOffences(response.offences);
                     setROffences(response.offences);
-                    console.log(response);
+                    //console.log(response);
                     setLoad(false);
                 })
 
@@ -168,12 +170,38 @@ const MainPage = (props) => {
         }
         //console.log(total);
     };
-    //TODO fix table sorting
-    const tableSort = () => {
-        const crimeData = crime.Total;
-        crimeData.sort((a, b) => a - b);
-        setCrime(crimeData);
+
+    const tableSortLGA = () => {
+        //console.log(alphabetical);
+        const sortCrime = crime.slice();
+        if (alphabetical === true) {
+            sortCrime.sort((a, b) => a.LGA.localeCompare(b.LGA));
+            sortCrime.reverse();
+            setAlphabetical(false);
+            setCrime(sortCrime);
+        } else {
+            sortCrime.sort((a, b) => a.LGA.localeCompare(b.LGA));
+            setAlphabetical(true);
+            setCrime(sortCrime);
+            //console.log(crime);
+        }
     };
+
+    const tableSortTotal = () => {
+        //console.log(ascending);
+        if (ascending === true) {
+            setAscending(false);
+            setCrime((crime) =>
+                crime.slice().sort((a, b) => a.total - b.total)
+            );
+        } else {
+            setAscending(true);
+            setCrime((crime) =>
+                crime.slice().sort((a, b) => b.total - a.total)
+            );
+        }
+    };
+
     //https://codepen.io/mtclmn/pen/QyPVJp
     const filterFunc = (event) => {
         let updatedList;
@@ -319,8 +347,18 @@ const MainPage = (props) => {
                         <table>
                             <thead>
                                 <tr>
-                                    <th onClick={tableSort}>LGA</th>
-                                    <th>Total</th>
+                                    <th
+                                        className="tableHeading"
+                                        onClick={tableSortLGA}
+                                    >
+                                        LGA
+                                    </th>
+                                    <th
+                                        className="tableHeading"
+                                        onClick={tableSortTotal}
+                                    >
+                                        Total
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
