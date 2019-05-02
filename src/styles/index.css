@@ -117,7 +117,6 @@ input {
     cursor: pointer;
 }
 
-
 /*https://www.w3schools.com/howto/howto_css_loader.asp*/
 .Loader {
     border: 13px solid #e6e3e3;
@@ -136,7 +135,6 @@ input {
         transform: rotate(360deg);
     }
 }
-
 
 .Tables {
     font-family: Verdana, Geneva, sans-serif;
@@ -170,17 +168,14 @@ input {
     font-size: 14px;
     padding: 4px;
     margin: 6px 5px;
-
 }
-
 
 .filterSearch {
     font-family: Verdana, Geneva, sans-serif;
     position: relative;
     margin: 6px 5px;
-    padding:7px;
+    padding: 7px;
     font-size: 14px;
-
 }
 
 .app {

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import LoginPage from './LoginPage';
+import Chart from 'chart.js';
+import ReactChartkick, { ColumnChart } from 'react-chartkick';
+import { ReactBingmaps } from 'react-bingmaps';
 
+ReactChartkick.addAdapter(Chart);
 
 const MainPage = (props) => {
     const [refOffences, setROffences] = useState([]);
@@ -8,7 +11,7 @@ const MainPage = (props) => {
     const [search, setSearch] = useState('');
     const [offences, setOffences] = useState([]);
     const [crime, setCrime] = useState([]);
-    const [total, setTotal] = useState([]);
+
     const [load, setLoad] = useState(false);
 
     const [filterGender, setGender] = useState('');
@@ -21,6 +24,7 @@ const MainPage = (props) => {
     const [ageList, setAgeList] = useState([]);
     const [areaList, setAreaList] = useState([]);
 
+    const [chart, setChart] = useState(false);
 
     useEffect(() => {
         let getParam = { method: 'GET' };
@@ -34,7 +38,7 @@ const MainPage = (props) => {
             })
             .then((response) => {
                 setGenderList(response.genders);
-                console.log(response.genders);
+                //console.log(response.genders);
             });
 
         fetch(encodeURI('https://cab230.hackhouse.sh/ages'), getParam)
@@ -43,7 +47,7 @@ const MainPage = (props) => {
             })
             .then((response) => {
                 setAgeList(response.ages);
-                console.log(response.ages);
+                //console.log(response.ages);
             });
 
         fetch(encodeURI('https://cab230.hackhouse.sh/years'), getParam)
@@ -52,7 +56,7 @@ const MainPage = (props) => {
             })
             .then((response) => {
                 setYearList(response.years);
-                console.log(response.years);
+                //console.log(response.years);
             });
 
         fetch(encodeURI('https://cab230.hackhouse.sh/areas'), getParam)
@@ -61,12 +65,10 @@ const MainPage = (props) => {
             })
             .then((response) => {
                 setAreaList(response.areas);
-                console.log(response.areas);
+                //console.log(response.areas);
             });
     }, []);
 
-
-    
     const handleChangeSearch = (event) => {
         setSearch(event.target.value);
     };
@@ -80,14 +82,17 @@ const MainPage = (props) => {
     const handleClickClear = () => {
         setOffences([]);
         setCrime([]);
-        setTotal([]);
+    };
+
+    const chartButton = () => {
+        chart ? setChart(false) : setChart(true);
     };
 
     const searchButton = () => {
         if (search === '') {
             setOffences([]);
             setCrime([]);
-            setTotal([]);
+
             setLoad(true);
             fetch('https://cab230.hackhouse.sh/offences')
                 .then((response) => {
@@ -100,12 +105,13 @@ const MainPage = (props) => {
                 .then((response) => {
                     setOffences(response.offences);
                     setROffences(response.offences);
-                    //console.log(response);
+                    console.log(response);
                     setLoad(false);
                 })
 
                 //const contents = this.result.foreach
                 .catch((error) => {
+                    setLoad(false);
                     console.log(
                         'There has been a problem with your fetch operation: ',
                         error.message
@@ -136,7 +142,7 @@ const MainPage = (props) => {
                 filterArea;
             setOffences([]);
             setCrime([]);
-            setTotal([]);
+
             setLoad(true);
             fetch(encodeURI(url), getParam)
                 .then((response) => {
@@ -146,21 +152,14 @@ const MainPage = (props) => {
                     throw new Error('Network response was not ok.');
                 })
                 .then((response) => {
-                    const allLGA = response.result.map(
-                        (location) => location.LGA
-                    );
-
-                    const allTotal = response.result.map(
-                        (location) => location.total
-                    );
-
-                    setCrime(allLGA);
-                    setRCrimes(allLGA);
-                    setTotal(allTotal);
+                    //console.log(response);
+                    //console.log(response.result);
+                    setCrime(response.result);
+                    setRCrimes(response.result);
                     setLoad(false);
-                    console.log(response);
                 })
                 .catch((error) => {
+                    setLoad(false);
                     console.log(
                         'There has been a problem with your fetch operation: ',
                         error.message
@@ -171,30 +170,35 @@ const MainPage = (props) => {
     };
     //TODO fix table sorting
     const tableSort = () => {
-        const crimeData = total;
+        const crimeData = crime.Total;
         crimeData.sort((a, b) => a - b);
         setCrime(crimeData);
     };
-//https://codepen.io/mtclmn/pen/QyPVJp
-    const filterFunc = (event) =>{
-        var updatedList;
-        if (offences.length > 0) {updatedList = refOffences;
-            updatedList = updatedList.filter(function(item){
-        return item.toLowerCase().search(
-            event.target.value.toLowerCase()) !== -1;
-    });
-    setOffences(updatedList);}
-
-    else {
-    updatedList = refCrimes;
-    updatedList = updatedList.filter(function(item){
-      return item.toLowerCase().search(
-        event.target.value.toLowerCase()) !== -1;
-    });
-    setCrime(updatedList);
-}
-      }
-
+    //https://codepen.io/mtclmn/pen/QyPVJp
+    const filterFunc = (event) => {
+        let updatedList;
+        if (refCrimes < 1) {
+            updatedList = refOffences;
+            updatedList = updatedList.filter(function(item) {
+                return (
+                    item
+                        .toLowerCase()
+                        .search(event.target.value.toLowerCase()) !== -1
+                );
+            });
+            setOffences(updatedList);
+        } else {
+            updatedList = refCrimes;
+            updatedList = updatedList.filter(function(item) {
+                return (
+                    item.LGA.toLowerCase().search(
+                        event.target.value.toLowerCase()
+                    ) !== -1
+                );
+            });
+            setCrime(updatedList);
+        }
+    };
 
     return (
         <div>
@@ -211,7 +215,7 @@ const MainPage = (props) => {
             </div>
 
             <div align="left">
-            <input
+                <input
                     type="search"
                     value={search}
                     onChange={handleChangeSearch}
@@ -222,7 +226,7 @@ const MainPage = (props) => {
                     Search
                 </button>
 
-                <button className="mainButtons" onClick={null}>
+                <button className="mainButtons" onClick={chartButton}>
                     Chart
                 </button>
                 <button className="mainButtons" onClick={handleClickClear}>
@@ -280,46 +284,67 @@ const MainPage = (props) => {
                         </option>
                     ))}
                 </select>
-                <input type="text" className="filterSearch" placeholder="Search results" onChange={filterFunc}/>
+                <input
+                    type="text"
+                    className="filterSearch"
+                    placeholder="Filter search"
+                    onChange={filterFunc}
+                />
             </div>
 
             <br />
             <br />
- 
-
             <div align="center">
                 {load ? <div className="Loader"> </div> : null}
             </div>
-            <div className="Tables" align="center">
-                {crime.length > 0 ? (
+            {chart && !load ? (
+                // Chartkick chart https://chartkick.com/react
+                <div>
+                    <ColumnChart
+                        data={crime.map((crimes) => [crimes.LGA, crimes.total])}
+                    />
+                </div>
+            ) : null}
+            <div>
+                <ReactBingmaps
+                    bingmapKey="AtY_EFtZcIb6YEUqFFW3TXrctk2Z2UVsND-SAjps-Wo1yBaDAuYEGg9AYAv14aj3"
+                    center={[13.0827, 80.2707]}
+                    zoom={4}
+                />
+            </div>
+
+            {!chart ? (
+                <div className="Tables" align="center">
+                    {crime.length > 0 ? (
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th onClick={tableSort}>LGA</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {crime.map((crimes, index) => (
+                                    <tr key={index}>
+                                        <td>{crimes.LGA}</td>
+                                        <td>{crimes.total}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : null}
+
                     <table>
-                        <thead>
-                            <tr>
-                                <th onClick={tableSort}>LGA</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
                         <tbody>
-                            {crime.map((crimes, index) => (
-                                <tr key={index}>
-                                    <td>{crimes}</td>
-                                    <td>{total[index]}</td>
+                            {offences.map((offence) => (
+                                <tr key={offence}>
+                                    <td> {offence} </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                ) : null}
-
-                <table>
-                    <tbody>
-                        {offences.map((offence) => (
-                            <tr key={offence}>
-                                <td> {offence} </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                </div>
+            ) : null}
             <p className="text">
                 {/*{'My current token is: ' + window.localStorage.getItem('token')}*/}
             </p>
