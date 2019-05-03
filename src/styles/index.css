@@ -182,6 +182,10 @@ input {
     font-size: 14px;
 }
 
+#mapid {
+    height: 180px;
+}
+
 .app {
     background-size: cover;
     -webkit-background-size: cover;

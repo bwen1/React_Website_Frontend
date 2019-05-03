@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, Component } from 'react';
+import { render } from 'react-dom';
+import GoogleMapReact from 'google-map-react';
+/*import {
+    GoogleMap,
+    Marker,
+    withGoogleMap,
+    withScriptjs
+} from 'react-google-maps';
+import HeatmapLayer from 'react-google-maps/lib/components/visualization/HeatmapLayer';*/
 import Chart from 'chart.js';
 import ReactChartkick, { ColumnChart } from 'react-chartkick';
-import { ReactBingmaps } from 'react-bingmaps';
 
 ReactChartkick.addAdapter(Chart);
 
@@ -28,6 +35,13 @@ const MainPage = (props) => {
     const [chart, setChart] = useState(false);
     const [ascending, setAscending] = useState(false);
     const [alphabetical, setAlphabetical] = useState(true);
+
+    const wrapperStyles = {
+        width: '100%',
+        maxWidth: 980,
+        margin: '0 auto'
+    };
+
     useEffect(() => {
         let getParam = { method: 'GET' };
         let head = {
@@ -94,6 +108,7 @@ const MainPage = (props) => {
         if (search === '') {
             setOffences([]);
             setCrime([]);
+            setChart(false);
 
             setLoad(true);
             fetch('https://cab230.hackhouse.sh/offences')
@@ -228,6 +243,24 @@ const MainPage = (props) => {
         }
     };
 
+    const DataMap = ({ text }) => (
+        <div
+            style={{
+                color: 'white',
+                background: 'grey',
+                padding: '7.5px 5px',
+                display: 'inline-flex',
+                textAlign: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '20%',
+                transform: 'translate(-50%, -50%)'
+            }}
+        >
+            {text}
+        </div>
+    );
+
     return (
         <div>
             <div className="header">
@@ -331,15 +364,33 @@ const MainPage = (props) => {
                     <ColumnChart
                         data={crime.map((crimes) => [crimes.LGA, crimes.total])}
                     />
+
+                    <div align="center">
+                        <div style={{ height: '50vh', width: '75%' }}>
+                            <GoogleMapReact
+                                bootstrapURLKeys={{
+                                    key:
+                                        'AIzaSyA2lt6vm5zQU9hkdG2VOcRRNGlpdbpX6ck'
+                                }}
+                                defaultCenter={{
+                                    lat: -22.286783,
+                                    lng: 145.893207
+                                }}
+                                defaultZoom={7}
+                            >
+                                {crime.map((crimes, index) => (
+                                    <DataMap
+                                        key={index}
+                                        lat={crimes.lat}
+                                        lng={crimes.lng}
+                                        text={crimes.LGA + '\n' + crimes.total}
+                                    />
+                                ))}
+                            </GoogleMapReact>
+                        </div>
+                    </div>
                 </div>
             ) : null}
-            <div>
-                <ReactBingmaps
-                    bingmapKey="AtY_EFtZcIb6YEUqFFW3TXrctk2Z2UVsND-SAjps-Wo1yBaDAuYEGg9AYAv14aj3"
-                    center={[13.0827, 80.2707]}
-                    zoom={4}
-                />
-            </div>
 
             {!chart ? (
                 <div className="Tables" align="center">
