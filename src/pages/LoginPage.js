@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-
 const LoginPage = (props) => {
     const [email, setEmail] = useState(''); // State of email input box
     const [password, setPassword] = useState(''); // State of password input box
 
     useEffect(() => {
         // If token already exists log the user in automatically
-        if (window.localStorage.getItem('token') !== null) {
+        if (window.localStorage.getItem('token')) {
             props.changePage('MainPage');
         } else {
         }
