@@ -6,6 +6,7 @@ const LoginPage = (props) => {
     useEffect(() => {
         // If token already exists log the user in automatically
         if (window.localStorage.getItem('token')) {
+            //TODO: Still logging in without valid token
             props.changePage('MainPage');
         } else {
         }

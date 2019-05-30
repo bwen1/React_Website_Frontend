@@ -1,13 +1,6 @@
-import React, { useState, useEffect, Component } from 'react';
-import { render } from 'react-dom';
+import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
-/*import {
-    GoogleMap,
-    Marker,
-    withGoogleMap,
-    withScriptjs
-} from 'react-google-maps';
-import HeatmapLayer from 'react-google-maps/lib/components/visualization/HeatmapLayer';*/
+
 import Chart from 'chart.js';
 import ReactChartkick, { ColumnChart } from 'react-chartkick';
 
@@ -35,12 +28,6 @@ const MainPage = (props) => {
     const [chart, setChart] = useState(false);
     const [ascending, setAscending] = useState(false);
     const [alphabetical, setAlphabetical] = useState(true);
-
-    const wrapperStyles = {
-        width: '100%',
-        maxWidth: 980,
-        margin: '0 auto'
-    };
 
     useEffect(() => {
         let getParam = { method: 'GET' };
@@ -169,8 +156,6 @@ const MainPage = (props) => {
                     throw new Error('Network response was not ok.');
                 })
                 .then((response) => {
-                    //console.log(response);
-                    //console.log(response.result);
                     setCrime(response.result);
                     setRCrimes(response.result);
                     setLoad(false);
@@ -183,11 +168,9 @@ const MainPage = (props) => {
                     );
                 });
         }
-        //console.log(total);
     };
 
     const tableSortLGA = () => {
-        //console.log(alphabetical);
         const sortCrime = crime.slice();
         if (alphabetical === true) {
             sortCrime.sort((a, b) => a.LGA.localeCompare(b.LGA));
@@ -198,12 +181,10 @@ const MainPage = (props) => {
             sortCrime.sort((a, b) => a.LGA.localeCompare(b.LGA));
             setAlphabetical(true);
             setCrime(sortCrime);
-            //console.log(crime);
         }
     };
 
     const tableSortTotal = () => {
-        //console.log(ascending);
         if (ascending === true) {
             setAscending(false);
             setCrime((crime) =>

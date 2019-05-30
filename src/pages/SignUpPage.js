@@ -14,10 +14,6 @@ const SignUpPage = (props) => {
         setPassword(event.target.value);
     };
 
-    //  props.sPass = { password };
-    //  props.sEmail = { email };
-    // let signUpMessage = ' ';
-
     // Onclick sign up button
     const handleClickSignup = () => {
         //  signUpMessage = 'That email is already registered, please login';
@@ -58,7 +54,6 @@ const SignUpPage = (props) => {
                             error.message
                         );
                     });
-                // props.changePage('Login'); // Change to LoginPage
             })
             // Password must be at least 5 characters long, email must be at least 5 characters long
             .catch((error) => {
