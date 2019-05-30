@@ -3,6 +3,8 @@ import GoogleMapReact from 'google-map-react';
 
 import Chart from 'chart.js';
 import ReactChartkick, { ColumnChart } from 'react-chartkick';
+import Tables from './MainPage/Tables';
+import Header from './MainPage/Header';
 
 ReactChartkick.addAdapter(Chart);
 
@@ -244,18 +246,7 @@ const MainPage = (props) => {
 
     return (
         <div>
-            <div className="header">
-                <h1>Queensland Offences</h1>
-                <div align="right">
-                    <button
-                        className="logoutButton"
-                        onClick={handleClickLogout}
-                    >
-                        Logout
-                    </button>
-                </div>
-            </div>
-
+            <Header handleClickLogout={handleClickLogout} />
             <div align="left">
                 <input
                     type="search"
@@ -374,46 +365,12 @@ const MainPage = (props) => {
             ) : null}
 
             {!chart ? (
-                <div className="Tables" align="center">
-                    {crime.length > 0 ? (
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th
-                                        className="tableHeading"
-                                        onClick={tableSortLGA}
-                                    >
-                                        LGA
-                                    </th>
-                                    <th
-                                        className="tableHeading"
-                                        onClick={tableSortTotal}
-                                    >
-                                        Total
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {crime.map((crimes, index) => (
-                                    <tr key={index}>
-                                        <td>{crimes.LGA}</td>
-                                        <td>{crimes.total}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    ) : null}
-
-                    <table>
-                        <tbody>
-                            {offences.map((offence) => (
-                                <tr key={offence}>
-                                    <td> {offence} </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                <Tables
+                    crime={crime}
+                    offences={offences}
+                    tableSortLGA={tableSortLGA}
+                    tableSortTotal={tableSortTotal}
+                />
             ) : null}
             <p className="text">
                 {/*{'My current token is: ' + window.localStorage.getItem('token')}*/}
