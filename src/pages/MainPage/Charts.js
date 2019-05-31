@@ -1,6 +1,31 @@
-import react from 'react';
+import React from 'react';
+import GoogleMapReact from 'google-map-react';
+
+import Chart from 'chart.js';
+import ReactChartkick, { ColumnChart } from 'react-chartkick';
 
 const Charts = (props) => {
+    const { crime } = props;
+    ReactChartkick.addAdapter(Chart);
+
+    const DataMap = ({ text }) => (
+        <div
+            style={{
+                color: 'white',
+                background: 'grey',
+                padding: '7.5px 5px',
+                display: 'inline-flex',
+                textAlign: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '20%',
+                transform: 'translate(-50%, -50%)'
+            }}
+        >
+            {text}
+        </div>
+    );
+
     return (
         <div>
             <ColumnChart
@@ -33,3 +58,5 @@ const Charts = (props) => {
         </div>
     );
 };
+
+export default Charts;

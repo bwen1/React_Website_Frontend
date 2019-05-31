@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
+const jwt = require('jsonwebtoken');
 const LoginPage = (props) => {
     const [email, setEmail] = useState(''); // State of email input box
     const [password, setPassword] = useState(''); // State of password input box
 
     useEffect(() => {
         // If token already exists log the user in automatically
-        if (window.localStorage.getItem('token')) {
-            //TODO: Still logging in without valid token
-            props.changePage('MainPage');
+        let token = window.localStorage.getItem('token');
+
+        if (token) {
+            let decodedToken = jwt.decode(token, { complete: true });
+            let dateNow = new Date();
+
+            if (decodedToken.payload.exp < dateNow.getTime()) {
+                props.changePage('MainPage');
+            } else {
+                window.localStorage.removeItem('token');
+            }
         } else {
         }
     });

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import GoogleMapReact from 'google-map-react';
 
-import Chart from 'chart.js';
-import ReactChartkick, { ColumnChart } from 'react-chartkick';
 import Tables from './MainPage/Tables';
 import Header from './MainPage/Header';
-
-ReactChartkick.addAdapter(Chart);
+import Charts from './MainPage/Charts';
+import Filters from './MainPage/Filters';
+import Functions from './MainPage/Functions';
 
 const MainPage = (props) => {
     const [refOffences, setROffences] = useState([]);
@@ -200,7 +198,6 @@ const MainPage = (props) => {
         }
     };
 
-    //https://codepen.io/mtclmn/pen/QyPVJp
     const filterFunc = (event) => {
         let updatedList;
         if (refCrimes < 1) {
@@ -226,142 +223,44 @@ const MainPage = (props) => {
         }
     };
 
-    const DataMap = ({ text }) => (
-        <div
-            style={{
-                color: 'white',
-                background: 'grey',
-                padding: '7.5px 5px',
-                display: 'inline-flex',
-                textAlign: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '20%',
-                transform: 'translate(-50%, -50%)'
-            }}
-        >
-            {text}
-        </div>
-    );
-
     return (
         <div>
             <Header handleClickLogout={handleClickLogout} />
-            <div align="left">
-                <input
-                    type="search"
-                    value={search}
-                    onChange={handleChangeSearch}
-                    placeholder="Show all offences"
-                    style={{ fontSize: '15px' }}
-                />
-                <button className="mainButtons" onClick={searchButton}>
-                    Search
-                </button>
 
-                <button className="mainButtons" onClick={chartButton}>
-                    Chart
-                </button>
-                <button className="mainButtons" onClick={handleClickClear}>
-                    Clear
-                </button>
-            </div>
+            <Functions
+                search={search}
+                handleChangeSearch={handleChangeSearch}
+                searchButton={searchButton}
+                chartButton={chartButton}
+                handleClickClear={handleClickClear}
+            />
 
-            <div>
-                <select
-                    onChange={(e) => setGender(e.target.value)}
-                    className="Filters"
-                    value={filterGender}
-                >
-                    <option value="">Gender</option>
-                    {genderList.map((gender) => (
-                        <option key={gender} value={'gender=' + gender}>
-                            {gender}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    onChange={(e) => setAge(e.target.value)}
-                    className="Filters"
-                    value={filterAge}
-                >
-                    <option value="">Age</option>
-                    {ageList.map((age) => (
-                        <option key={age} value={'age=' + age}>
-                            {age}
-                        </option>
-                    ))}
-                </select>
-
-                <select
-                    onChange={(e) => setYear(e.target.value)}
-                    className="Filters"
-                    value={filterYear}
-                >
-                    <option value="">Year</option>
-                    {yearList.map((year) => (
-                        <option key={year} value={'year=' + year}>
-                            {year}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    onChange={(e) => setArea(e.target.value)}
-                    className="Filters"
-                    value={filterArea}
-                >
-                    <option value="">Area</option>
-                    {areaList.map((area) => (
-                        <option key={area} value={'area=' + area}>
-                            {area}
-                        </option>
-                    ))}
-                </select>
-                <input
-                    type="text"
-                    className="filterSearch"
-                    placeholder="Filter search"
-                    onChange={filterFunc}
-                />
-            </div>
+            <Filters
+                setGender={setGender}
+                filterGender={filterGender}
+                genderList={genderList}
+                setAge={setAge}
+                filterAge={filterAge}
+                ageList={ageList}
+                setYear={setYear}
+                filterYear={filterYear}
+                yearList={yearList}
+                setArea={setArea}
+                filterArea={filterArea}
+                areaList={areaList}
+                filterFunc={filterFunc}
+            />
 
             <br />
             <br />
+
             <div align="center">
                 {load ? <div className="Loader"> </div> : null}
             </div>
+
             {chart && !load ? (
                 // Chartkick chart https://chartkick.com/react
-                <div>
-                    <ColumnChart
-                        data={crime.map((crimes) => [crimes.LGA, crimes.total])}
-                    />
-
-                    <div align="center">
-                        <div style={{ height: '50vh', width: '75%' }}>
-                            <GoogleMapReact
-                                bootstrapURLKeys={{
-                                    key:
-                                        'AIzaSyA2lt6vm5zQU9hkdG2VOcRRNGlpdbpX6ck'
-                                }}
-                                defaultCenter={{
-                                    lat: -22.286783,
-                                    lng: 145.893207
-                                }}
-                                defaultZoom={7}
-                            >
-                                {crime.map((crimes, index) => (
-                                    <DataMap
-                                        key={index}
-                                        lat={crimes.lat}
-                                        lng={crimes.lng}
-                                        text={crimes.LGA + '\n' + crimes.total}
-                                    />
-                                ))}
-                            </GoogleMapReact>
-                        </div>
-                    </div>
-                </div>
+                <Charts crime={crime} />
             ) : null}
 
             {!chart ? (
